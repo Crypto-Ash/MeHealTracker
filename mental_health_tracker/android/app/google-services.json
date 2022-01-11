@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "919838132292",
+    "project_id": "mehealtracker",
+    "storage_bucket": "mehealtracker.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:919838132292:android:55910a3ef59f8994d89411",
+        "android_client_info": {
+          "package_name": "com.example.mental_health_tracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "919838132292-s99jn1cm0dfasg1eiaack3s2vaii4coc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mental_health_tracker",
+            "certificate_hash": "f0681003011b093c3cad7cb314214ef310cc4194"
+          }
+        },
+        {
+          "client_id": "919838132292-p02ikifj0ikcheolpketu07qj9s03ltk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcPXIBqtXFpC79P-_VQwChLGJEH763O1s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "919838132292-p02ikifj0ikcheolpketu07qj9s03ltk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
