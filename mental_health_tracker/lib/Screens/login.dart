@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cache_manager/cache_manager.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -244,6 +245,7 @@ class _MyLoginState extends State<MyLogin> {
             .signInWithEmailAndPassword(email: email, password: password)
             .then((uid) => {
                   Fluttertoast.showToast(msg: "Login Successful"),
+                  WriteCache.setString(key: "cache", value: email),
                   Navigator.of(context).pushReplacementNamed('/dashboard'),
                 });
       } on FirebaseAuthException catch (error) {
