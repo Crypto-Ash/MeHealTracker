@@ -1,8 +1,8 @@
 import 'dart:async';
+import 'package:cache_manager/cache_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:mental_health_tracker/Constants/colors.dart';
 import 'package:mental_health_tracker/Screens/dashboard.dart';
-
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -12,14 +12,23 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
-  
+  //Cache_Manger Integration
+  // A future needs an async
+  Future initiateCache() async {
+    CacheManagerUtils.conditionalCache(
+        key: "cache",
+        valueType: ValueType.StringValue,
+        actionIfNull: () {
+          Navigator.of(context).pushReplacementNamed('/login');
+        },
+        actionIfNotNull: () {
+          Navigator.of(context).pushReplacementNamed('/dashboard');
+        });
+  }
 
   @override
   void initState() {
-    Timer(
-        const Duration(seconds: 5),
-        () => Navigator.pushReplacementNamed(context, '/login'));
+    Timer(const Duration(seconds: 5),initiateCache);
     super.initState();
   }
 
