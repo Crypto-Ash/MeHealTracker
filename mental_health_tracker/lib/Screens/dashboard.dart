@@ -20,13 +20,9 @@ class _DashBoardPageState extends State<DashBoardPage> {
       ),
       body: Center(
           child: CustomButton(
-              buttonText: "Logout",
-              onPressed: () {
-                DeleteCache.deleteKey("cache",
-                    Navigator.of(context).pushReplacementNamed('/login'));
-              },
-              height: 60,
-              width: 80)),
+              buttonText: "Logout", onPressed: () {
+                DeleteCache.deleteKey("cache", Navigator.of(context).pushReplacementNamed('/login'));
+              }, height: 60, width: 80)),
     );
   }
 }
