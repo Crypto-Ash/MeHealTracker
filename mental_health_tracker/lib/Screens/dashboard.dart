@@ -56,7 +56,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
                 children: [
                   RichText(
                     text: TextSpan(
-                      text: 'Hi ${loggedInUser.name}',
+                      text: 'Hey ${loggedInUser.name}',
                       style: const TextStyle(color: Colors.black, fontSize: 32.0, fontFamily: 'Farro', fontWeight: FontWeight.w600),
                       children: const <TextSpan>[
                         TextSpan(
