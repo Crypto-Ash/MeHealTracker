@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:mental_health_tracker/Constants/colors.dart';
 import 'package:mental_health_tracker/models/user_model.dart';
 import 'package:mental_health_tracker/widgets/rect_button.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class DashBoardPage extends StatefulWidget {
   const DashBoardPage({Key? key}) : super(key: key);
@@ -41,7 +42,9 @@ class _DashBoardPageState extends State<DashBoardPage> {
         key: _scaffoldkey,
         backgroundColor: Color(dashbg),
         drawer: ClipRRect(
-          borderRadius: BorderRadius.only(topRight: Radius.circular(20.0), bottomRight: Radius.circular(20.0)),
+          borderRadius: BorderRadius.only(
+              topRight: Radius.circular(20.0),
+              bottomRight: Radius.circular(20.0)),
           child: Drawer(
             child: ListView(
               padding: EdgeInsets.all(0),
@@ -50,7 +53,10 @@ class _DashBoardPageState extends State<DashBoardPage> {
                   accountEmail: Text(loggedInUser.email.toString()),
                   accountName: Text(loggedInUser.name.toString()),
                   currentAccountPicture: CircleAvatar(
-                    child: Text(loggedInUser.name.toString().substring(0,2).toUpperCase()),
+                    child: Text(loggedInUser.name
+                        .toString()
+                        .substring(0, 2)
+                        .toUpperCase()),
                   ),
                 ),
                 ListTile(
@@ -93,7 +99,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
         body: Column(
           children: [
             Container(
-              padding: EdgeInsets.all(10.0),
+              padding: EdgeInsets.all(15.0),
               width: 400.0,
               height: 100.0,
               // color: Colors.amber,
@@ -128,6 +134,66 @@ class _DashBoardPageState extends State<DashBoardPage> {
                       },
                       ic: Icon(Icons.menu)),
                 ],
+              ),
+            ),
+            //Detail-Card
+            Padding(
+              padding: const EdgeInsets.only(top: 20.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(45.0),
+                  color: const Color(cardbg),
+                ),
+                height: MediaQuery.of(context).size.height - 450.0,
+                width: MediaQuery.of(context).size.width - 50.0,
+                child: Stack(
+                  children: <Widget>[
+                    Positioned(
+                        top: 30.0,
+                        left: 25.0,
+                        child: Text(
+                          'Today',
+                          style: TextStyle(
+                            color: Colors.white60,
+                            fontSize: 20.0,
+                          ),
+                        )),
+                    Positioned(
+                      right: 30.0,
+                      top: 25.0,
+                      child: Container(
+                        height: 80,
+                        width: 80,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20.0),
+                          color: Colors.white,
+                        ),
+                        child: Image.asset('assets/images/boy.png'),
+                      ),
+                    ),
+                    Positioned(
+                        left: 25.0,
+                        top: 90.0,
+                        child: Text(
+                          'Good',
+                          style: TextStyle(
+                              fontSize: 29.0,
+                              fontFamily: 'Farro',
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700),
+                        )),
+                    Positioned(
+                        left: 30.0,
+                        top: 130.0,
+                        child: CircularPercentIndicator(
+                          radius: 80.0,
+                          lineWidth: 6.0,
+                          percent: 0.6,
+                          center: new Text("60%"),
+                          progressColor: Colors.green,
+                        )),
+                  ],
+                ),
               ),
             ),
           ],
