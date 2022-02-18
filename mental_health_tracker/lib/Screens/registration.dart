@@ -1,3 +1,4 @@
+import 'package:cache_manager/cache_manager.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -294,11 +295,11 @@ class _MySignupState extends State<MySignup> {
       try {
         await _auth
             .createUserWithEmailAndPassword(email: email, password: password)
-            .then((value) => {postDetailsToFirestore()})
+            .then((value) {postDetailsToFirestore();WriteCache.setString(key: "cache", value: email);})
             .catchError((e) {
           Fluttertoast.showToast(msg: e!.message);
         });
-      } on FirebaseAuthException catch (error) {
+      }  on FirebaseAuthException catch (error) {
         switch (error.code) {
           case "invalid-email":
             errorMessage = "Your email address appears to be malformed.";
@@ -321,7 +322,7 @@ class _MySignupState extends State<MySignup> {
           default:
             errorMessage = "An undefined Error happened.";
         }
-        Fluttertoast.showToast(msg: errorMessage!);
+        await Fluttertoast.showToast(msg: errorMessage!);
       }
     }
   }
@@ -336,10 +337,12 @@ class _MySignupState extends State<MySignup> {
     UserModel userModel = UserModel();
 
     // writing all the values
-    userModel.email = user!.email;
+    userModel.email =  user!.email;
     userModel.uid = user.uid;
     userModel.name = nameController.text;
     userModel.contact = contactController.text;
+    userModel.today = "N/A";
+    userModel.questionans = "0";
 
     await firebaseFirestore
         .collection("users")

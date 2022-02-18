@@ -30,7 +30,8 @@ class _DashBoardPageState extends State<DashBoardPage> {
         .doc(user!.uid)
         .get()
         .then((value) {
-      this.loggedInUser = UserModel.fromMap(value.data());
+      loggedInUser = UserModel.fromMap(value.data());
+      
       setState(() {});
     });
   }
@@ -196,6 +197,9 @@ class _DashBoardPageState extends State<DashBoardPage> {
                 ),
               ),
             ),
+            ElevatedButton(child: Text("Question"),onPressed: (){setState(() {
+              Navigator.pushNamed(context, "/questionpage");
+            });},)
           ],
         ),
       ),
