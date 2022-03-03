@@ -11,14 +11,15 @@ class QuestionBtn extends StatefulWidget {
 }
 
 class _QuestionBtnState extends State<QuestionBtn> {
-  
   double _rating = 1.0;
+  num score = 0;
 
   void _onChanged(double value) {
     setState(() {
       _rating = value;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -41,18 +42,42 @@ class _QuestionBtnState extends State<QuestionBtn> {
             ),
           ),
         ),
-        
-        Image.network(widget.questionModel.imgurl.toString(), width: 400.0, height: 250.0,
-            errorBuilder: (BuildContext context, Object exception,
-                StackTrace? stackTrace) {
+        Image.network(widget.questionModel.imgurl.toString(),
+            width: 400.0, height: 250.0, errorBuilder: (BuildContext context,
+                Object exception, StackTrace? stackTrace) {
           return const CircularProgressIndicator();
         }),
         widget.questionModel.widget == "button"
-            ? Buttons(
-                widget.questionModel.option1,
-                widget.questionModel.option2,
-                widget.questionModel.option3,
-                widget.questionModel.option4)
+            ? Container(
+                child: Column(
+                  children: [
+                    questionBtn(
+                      val: widget.questionModel.option1txt!,
+                      fun: () => {
+                        score = widget.questionModel.option1pt!,
+                      },
+                    ),
+                    questionBtn(
+                      val: widget.questionModel.option2txt!,
+                      fun: () => {
+                        score = widget.questionModel.option2pt!,
+                      },
+                    ),
+                    questionBtn(
+                      val: widget.questionModel.option3txt!,
+                      fun: () => {
+                        score = widget.questionModel.option3pt!,
+                      },
+                    ),
+                    questionBtn(
+                      val: widget.questionModel.option4txt!,
+                      fun: () => {
+                        score = widget.questionModel.option4pt!,
+                      },
+                    ),
+                  ],
+                ),
+              )
             : Container(
                 height: 300,
                 width: 400,
@@ -69,7 +94,10 @@ class _QuestionBtnState extends State<QuestionBtn> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              RectButton(onPressed: (){}, ic: Icon(Icons.arrow_forward_ios_rounded)),
+              RectButton(
+                  onPressed: () {
+                    
+                  }, ic: Icon(Icons.arrow_forward_ios_rounded)),
             ],
           ),
         )
@@ -79,21 +107,22 @@ class _QuestionBtnState extends State<QuestionBtn> {
 }
 
 // 4 btn together
-Widget Buttons(option1, option2, option3, option4) {
-  return Column(
-    children: [
-      questionBtn(val: option1),
-      questionBtn(val: option2),
-      questionBtn(val: option3),
-      questionBtn(val: option4),
-    ],
-  );
-}
+// Widget Buttons(option1, option2, option3, option4) {
+//   return Column(
+//     children: [
+//       questionBtn(val: option1, ),
+//       questionBtn(val: option2),
+//       questionBtn(val: option3),
+//       questionBtn(val: option4),
+//     ],
+//   );
+// }
 
 // single btn layout
 class questionBtn extends StatelessWidget {
-  const questionBtn({Key? key, required this.val}) : super(key: key);
+  const questionBtn({Key? key, required this.val, this.fun}) : super(key: key);
   final String val;
+  final VoidCallback? fun;
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +133,7 @@ class questionBtn extends StatelessWidget {
         style:
             TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: "Farro"),
       ),
-      onPressed: () {},
+      onPressed: fun,
     );
   }
 }

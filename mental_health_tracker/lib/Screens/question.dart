@@ -15,12 +15,17 @@ class QuestionPage extends StatefulWidget {
 class _QuestionPageState extends State<QuestionPage> {
   QuestionModel questions = QuestionModel();
 
+  String quetionindex = "1";
+  
+
+  
+
   @override
   void initState() {
     super.initState();
     FirebaseFirestore.instance
         .collection("questions")
-        .doc('1')
+        .doc(quetionindex)
         .get()
         .then((value) {
       this.questions = QuestionModel.fromMap(value.data());
