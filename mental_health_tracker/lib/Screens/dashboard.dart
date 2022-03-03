@@ -36,6 +36,10 @@ class _DashBoardPageState extends State<DashBoardPage> {
     });
   }
 
+  Future<String> getUsername() async{
+    return loggedInUser.name!;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -107,25 +111,34 @@ class _DashBoardPageState extends State<DashBoardPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  RichText(
-                    text: TextSpan(
-                      text: 'Hey ${loggedInUser.name}',
-                      style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 32.0,
-                          fontFamily: 'Farro',
-                          fontWeight: FontWeight.w600),
-                      children: const <TextSpan>[
-                        TextSpan(
-                          text: '\nYour Report',
-                          style: TextStyle(
-                              color: Colors.black87,
-                              fontSize: 32.0,
-                              fontFamily: 'Farro',
-                              fontWeight: FontWeight.w600),
-                        )
-                      ],
-                    ),
+                  FutureBuilder(
+                    initialData: "Hey",
+                    future: getUsername(),
+                    builder: (context, snapshot){
+                      if(snapshot.data != null){
+                        return RichText(
+                      text: TextSpan(
+                        text: 'Hey ${loggedInUser.name}',
+                        style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 32.0,
+                            fontFamily: 'Farro',
+                            fontWeight: FontWeight.w600),
+                        children: const <TextSpan>[
+                          TextSpan(
+                            text: '\nYour Report',
+                            style: TextStyle(
+                                color: Colors.black87,
+                                fontSize: 32.0,
+                                fontFamily: 'Farro',
+                                fontWeight: FontWeight.w600),
+                          )
+                        ],
+                      ),
+                    );
+                      }
+                      return CircularProgressIndicator();
+                    }
                   ),
                   RectButton(
                       onPressed: () {
