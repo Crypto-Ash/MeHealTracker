@@ -343,6 +343,8 @@ class _MySignupState extends State<MySignup> {
     userModel.contact = contactController.text;
     userModel.today = "N/A";
     userModel.questionans = "0";
+    userModel.questionIndex = 1;
+    userModel.score = 0;
 
     await firebaseFirestore
         .collection("users")
