@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mental_health_tracker/Constants/colors.dart';
+import 'package:mental_health_tracker/Screens/question.dart';
 import 'package:mental_health_tracker/models/user_model.dart';
 import 'package:mental_health_tracker/widgets/rect_button.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -31,23 +32,17 @@ class _DashBoardPageState extends State<DashBoardPage> {
         .get()
         .then((value) {
       loggedInUser = UserModel.fromMap(value.data());
-      
-      setState(() {
-      });
+      setState(() {});
     });
   }
 
-  Future<String?> getUsername() async{
+  Future<String?> getUsername() async {
     return loggedInUser.name;
-  }
-  Future<num?> getQuestionIndex() async{
-    var qi = loggedInUser.questionIndex;
-    print(qi);
-    return loggedInUser.questionIndex;
   }
 
   @override
   Widget build(BuildContext context) {
+    // loggedInUser.userinfo?.forEach((key,value) => {print("${key} ${value}")});
     return SafeArea(
       child: Scaffold(
         key: _scaffoldkey,
@@ -62,7 +57,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
               children: <Widget>[
                 UserAccountsDrawerHeader(
                   accountEmail: Text(loggedInUser.email.toString()),
-                  accountName: Text(loggedInUser.today.toString()),
+                  accountName: Text(loggedInUser.name.toString()),
                   currentAccountPicture: CircleAvatar(
                     child: Text(loggedInUser.name
                         .toString()
@@ -118,34 +113,33 @@ class _DashBoardPageState extends State<DashBoardPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   FutureBuilder(
-                    initialData: "Hey",
-                    future: getUsername(),
-                    builder: (context, snapshot){
-                      if(snapshot.data != null){
-                        return RichText(
-                      text: TextSpan(
-                        text: 'Hey ${loggedInUser.name}',
-                        style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 32.0,
-                            fontFamily: 'Farro',
-                            fontWeight: FontWeight.w600),
-                        children: const <TextSpan>[
-                          TextSpan(
-                            text: '\nYour Report',
-                            style: TextStyle(
-                                color: Colors.black87,
-                                fontSize: 32.0,
-                                fontFamily: 'Farro',
-                                fontWeight: FontWeight.w600),
-                          )
-                        ],
-                      ),
-                    );
-                      }
-                      return CircularProgressIndicator();
-                    }
-                  ),
+                      initialData: "Hey",
+                      future: getUsername(),
+                      builder: (context, snapshot) {
+                        if (snapshot.data != null) {
+                          return RichText(
+                            text: TextSpan(
+                              text: 'Hey ${snapshot.data}',
+                              style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 32.0,
+                                  fontFamily: 'Farro',
+                                  fontWeight: FontWeight.w600),
+                              children: const <TextSpan>[
+                                TextSpan(
+                                  text: '\nYour Report',
+                                  style: TextStyle(
+                                      color: Colors.black87,
+                                      fontSize: 32.0,
+                                      fontFamily: 'Farro',
+                                      fontWeight: FontWeight.w600),
+                                )
+                              ],
+                            ),
+                          );
+                        }
+                        return CircularProgressIndicator();
+                      }),
                   RectButton(
                       onPressed: () {
                         setState(() {
@@ -195,7 +189,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
                         left: 25.0,
                         top: 90.0,
                         child: Text(
-                          'Good',
+                          '${loggedInUser.today}',
                           style: TextStyle(
                               fontSize: 29.0,
                               fontFamily: 'Farro',
@@ -209,17 +203,27 @@ class _DashBoardPageState extends State<DashBoardPage> {
                           radius: 80.0,
                           lineWidth: 6.0,
                           percent: 0.6,
-                          center: new Text("60%"),
+                          center: Text("50%"),
                           progressColor: Colors.green,
                         )),
                   ],
                 ),
               ),
             ),
-            // FutureBuilder(future: getQuestionIndex(),builder: (context,snapshot){if(snapshot.hasData){Text("${snapshot.data}");} return CircularProgressIndicator();}),
-            ElevatedButton(child: Text("Question"),onPressed: (){setState(() {
-              Navigator.pushNamed(context, "/questionpage");
-            });},)
+            ElevatedButton(
+              child: Text("Questions"),
+              onPressed: () {
+                setState(() {
+                  Navigator.push(context, MaterialPageRoute<void>(
+                    builder: (BuildContext context) {
+                      return QuestionPage(
+                        questionIn: loggedInUser.questionIndex!,
+                      );
+                    },
+                  ));
+                });
+              },
+            )
           ],
         ),
       ),
