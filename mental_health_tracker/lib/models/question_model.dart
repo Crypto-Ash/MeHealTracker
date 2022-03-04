@@ -9,7 +9,7 @@ class QuestionModel {
   num? option3pt;
   num? option4pt;
   String? widget;
-  String? uid;
+  num? uid;
   String? imgurl;
   Map? option1;
   Map? option2;
