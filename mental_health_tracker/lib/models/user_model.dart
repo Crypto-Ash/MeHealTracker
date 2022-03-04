@@ -6,8 +6,10 @@ class UserModel {
   Map? userinfo;
   String? today;
   String? questionans;
+  num? questionIndex;
+  num? score;
 
-  UserModel({this.uid, this.email, this.name, this.contact, this.userinfo, this.today, this.questionans});
+  UserModel({this.uid, this.email, this.name, this.contact, this.userinfo, this.today, this.questionans, this.questionIndex, this.score});
 
   // recive data from server
   factory UserModel.fromMap(map){
@@ -19,6 +21,8 @@ class UserModel {
       userinfo: map['userinfo'],
       today: map['userinfo.today'],
       questionans: map['userinfo.questionans'],
+      questionIndex: map['userinfo.questionIndex'],
+      score: map['userinfo.Score'],
     );
   }
 
@@ -32,6 +36,8 @@ class UserModel {
       'name': name,
       'contact': contact,
       'userinfo': {
+        'Score': score,
+        'questionIndex': questionIndex,
         'today': today,
         'questionans': questionans,
       }
