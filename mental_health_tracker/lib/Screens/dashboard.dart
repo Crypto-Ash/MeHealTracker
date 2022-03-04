@@ -32,12 +32,18 @@ class _DashBoardPageState extends State<DashBoardPage> {
         .then((value) {
       loggedInUser = UserModel.fromMap(value.data());
       
-      setState(() {});
+      setState(() {
+      });
     });
   }
 
   Future<String?> getUsername() async{
     return loggedInUser.name;
+  }
+  Future<num?> getQuestionIndex() async{
+    var qi = loggedInUser.questionIndex;
+    print(qi);
+    return loggedInUser.questionIndex;
   }
 
   @override
@@ -56,7 +62,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
               children: <Widget>[
                 UserAccountsDrawerHeader(
                   accountEmail: Text(loggedInUser.email.toString()),
-                  accountName: Text(loggedInUser.name.toString()),
+                  accountName: Text(loggedInUser.today.toString()),
                   currentAccountPicture: CircleAvatar(
                     child: Text(loggedInUser.name
                         .toString()
@@ -210,6 +216,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
                 ),
               ),
             ),
+            // FutureBuilder(future: getQuestionIndex(),builder: (context,snapshot){if(snapshot.hasData){Text("${snapshot.data}");} return CircularProgressIndicator();}),
             ElevatedButton(child: Text("Question"),onPressed: (){setState(() {
               Navigator.pushNamed(context, "/questionpage");
             });},)

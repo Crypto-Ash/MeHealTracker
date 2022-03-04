@@ -19,10 +19,10 @@ class UserModel {
       name: map['name'],
       contact: map['contact'],
       userinfo: map['userinfo'],
-      today: map['userinfo.today'],
-      questionans: map['userinfo.questionans'],
-      questionIndex: map['userinfo.questionIndex'],
-      score: map['userinfo.Score'],
+      today: map['userinfo']['today'],
+      questionans: map['userinfo']['questionans'],
+      questionIndex: map['userinfo']['questionIndex'],
+      score: map['userinfo']['Score'],
     );
   }
 
