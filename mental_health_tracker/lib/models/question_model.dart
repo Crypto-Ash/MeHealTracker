@@ -22,6 +22,10 @@ class QuestionModel {
     return QuestionModel(
       uid: map['uid'],
       question: map['question'],
+      option1: map['option1'],
+      option2: map['option2'],
+      option3: map['option3'],
+      option4: map['option4'],
       option1txt: map['option1']['optext'],
       option1pt: map['option1']['points'],
       option2txt: map['option2']['optext'],
