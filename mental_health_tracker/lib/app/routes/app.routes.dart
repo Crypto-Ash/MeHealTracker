@@ -21,9 +21,9 @@ class AppRouter{
       case "/signup": {
         return MaterialPageRoute(builder: (_) => const MySignup());
       }
-      case "/questionpage":{
-        return MaterialPageRoute(builder: (_) => const QuestionPage());
-      }
+      // case "/questionpage":{
+      //   return MaterialPageRoute(builder: (_) => const QuestionPage());
+      // }
     }
   }
 }
