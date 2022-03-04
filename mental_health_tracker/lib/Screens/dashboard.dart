@@ -36,8 +36,8 @@ class _DashBoardPageState extends State<DashBoardPage> {
     });
   }
 
-  Future<String> getUsername() async{
-    return loggedInUser.name!;
+  Future<String?> getUsername() async{
+    return loggedInUser.name;
   }
 
   @override
