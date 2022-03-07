@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mental_health_tracker/models/question_model.dart';
 
+final questionRef = FirebaseFirestore.instance.collection('questions');
+
 class QuestionPage extends StatefulWidget {
   const QuestionPage({Key? key, required this.questionIn}) : super(key: key);
   final num questionIn;
@@ -16,14 +18,14 @@ class _QuestionPageState extends State<QuestionPage> {
   @override
   void initState() {
     super.initState();
-    FirebaseFirestore.instance
-        .collection("questions")
-        .doc(widget.questionIn.toString())
-        .get()
-        .then((value) {
-      questions = QuestionModel.fromMap(value.data());
-      setState(() {});
-    });
+    // FirebaseFirestore.instance
+    //     .collection("questions")
+    //     .doc(widget.questionIn.toString())
+    //     .get()
+    //     .then((value) {
+    //   questions = QuestionModel.fromMap(value.data());
+    //   setState(() {});
+    // });
   }
 
   double _rating = 1.0;
@@ -35,85 +37,68 @@ class _QuestionPageState extends State<QuestionPage> {
     });
   }
 
+  Future<QuestionModel> getQuestions(num qi) async {
+    DocumentSnapshot doc = await questionRef.doc(qi.toString()).get();
+    return questions = QuestionModel.fromMap(doc.data());
+  }
+
   @override
   Widget build(BuildContext context) {
     num questionindex = widget.questionIn;
+
     return Scaffold(
-        body: Padding(
-      padding: const EdgeInsets.fromLTRB(10, 26, 10, 10),
-      child: Column(
-        children: <Widget>[
-          Container(
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: Colors.amber[200],
-              borderRadius: BorderRadius.circular(20),
-            ),
-            height: 150,
-            width: 380,
-            child: Text(
-              "${questions.question}",
-              style: TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-                fontFamily: "Farro",
-              ),
-              softWrap: true,
-            ),
-          ),
-          Image.network(questions.imgurl.toString(),
-              width: 400.0, height: 250.0, errorBuilder: (BuildContext context,
-                  Object exception, StackTrace? stackTrace) {
-            return const CircularProgressIndicator();
-          }),
-          // Buttons From Here
-          Container(
+        body: StreamBuilder(
+      stream: getQuestions(questionindex).asStream(),
+      builder: (context, AsyncSnapshot snapshot) {
+        if (!snapshot.hasData) {
+          return CircularProgressIndicator();
+        }
+        return Center(
             child: Column(
-              children: [
-                questionBtn(
-                  val: questions.option1txt,
-                  fun: () => {
-                    score = questions.option1pt!,
-                  },
-                ),
-                questionBtn(
-                  val: questions.option2txt,
-                  fun: () => {
-                    score = questions.option2pt!,
-                  },
-                ),
-                questionBtn(
-                  val: questions.option3txt,
-                  fun: () => {
-                    score = questions.option3pt!,
-                  },
-                ),
-                questionBtn(
-                  val: questions.option4txt,
-                  fun: () => {
-                    score = questions.option4pt!,
-                  },
-                ),
-              ],
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+                height: 150,
+                width: 390,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(color: Colors.amber[400],borderRadius: BorderRadius.circular(20.0)),
+                child: Text(questions.question!,textAlign: TextAlign.center,style: TextStyle(color: Colors.white, fontFamily: "farro", fontWeight: FontWeight.bold, fontSize: 25),)),
+            Image.network(
+              questions.imgurl.toString(),
+              errorBuilder: (context, error, stackTrace) =>
+                  const CircularProgressIndicator(),
             ),
-          ),
-        ],
-      ),
+            questionBtn(
+              val: questions.option1txt,
+            ),
+            questionBtn(
+              val: questions.option2txt,
+            ),
+            questionBtn(
+              val: questions.option3txt,
+            ),
+            questionBtn(
+              val: questions.option4txt,
+            )
+          ],
+        ));
+      },
     ));
   }
 }
 
 // single btn layout
 class questionBtn extends StatelessWidget {
-  const questionBtn({Key? key, this.val, this.fun}) : super(key: key);
+  questionBtn({Key? key, this.val, this.fun}) : super(key: key);
   final String? val;
   final VoidCallback? fun;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      style: ButtonStyle(),
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color>(Colors.amber),
+      ),
       child: Text(
         "$val",
         style:
