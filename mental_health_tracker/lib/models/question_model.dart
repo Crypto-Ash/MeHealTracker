@@ -16,7 +16,7 @@ class QuestionModel {
   Map? option3;
   Map? option4;
 
-  QuestionModel({this.uid, this.question, this.widget, this.option1, this.option2, this.option3, this.option4, this.imgurl, option1txt, option2txt, option3txt, option4txt, option1pt, option2pt, option3pt, option4pt});
+  QuestionModel({this.uid, this.question, this.widget, this.option1, this.option2, this.option3, this.option4, this.imgurl, this.option1txt, this.option2txt, this.option3txt, this.option4txt, this.option1pt, this.option2pt, this.option3pt, this.option4pt});
 
   factory QuestionModel.fromMap(map){
     return QuestionModel(
