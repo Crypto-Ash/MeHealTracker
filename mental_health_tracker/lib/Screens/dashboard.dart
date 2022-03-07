@@ -6,7 +6,6 @@ import 'package:mental_health_tracker/Constants/colors.dart';
 import 'package:mental_health_tracker/Screens/question.dart';
 import 'package:mental_health_tracker/models/user_model.dart';
 import 'package:mental_health_tracker/widgets/rect_button.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class DashBoardPage extends StatefulWidget {
   const DashBoardPage({Key? key}) : super(key: key);
@@ -195,16 +194,6 @@ class _DashBoardPageState extends State<DashBoardPage> {
                               fontFamily: 'Farro',
                               color: Colors.white,
                               fontWeight: FontWeight.w700),
-                        )),
-                    Positioned(
-                        left: 30.0,
-                        top: 130.0,
-                        child: CircularPercentIndicator(
-                          radius: 80.0,
-                          lineWidth: 6.0,
-                          percent: 0.6,
-                          center: Text("50%"),
-                          progressColor: Colors.green,
                         )),
                   ],
                 ),
