@@ -206,7 +206,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
                   Navigator.push(context, MaterialPageRoute<void>(
                     builder: (BuildContext context) {
                       return QuestionPage(
-                        questionIn: loggedInUser.questionIndex!,
+                        questionIn: int.parse(loggedInUser.questionIndex.toString()),
                       );
                     },
                   ));

@@ -4,7 +4,6 @@ import 'package:mental_health_tracker/Screens/login.dart';
 import 'package:mental_health_tracker/Screens/question.dart';
 import 'package:mental_health_tracker/Screens/registration.dart';
 import 'package:mental_health_tracker/Screens/splash_screen.dart';
-import 'package:mental_health_tracker/widgets/question_widget.dart';
 
 class AppRouter{
   static Route? generateRoute(RouteSettings settings){
