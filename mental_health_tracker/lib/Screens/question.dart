@@ -1,33 +1,30 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mental_health_tracker/models/question_model.dart';
+import 'package:mental_health_tracker/models/user_model.dart';
+
+final questionRef = FirebaseFirestore.instance.collection('questions');
+final userRef = FirebaseFirestore.instance.collection('users');
 
 class QuestionPage extends StatefulWidget {
-  const QuestionPage({Key? key, required this.questionIn}) : super(key: key);
+  const QuestionPage({Key? key, required this.questionIn, required this.userid})
+      : super(key: key);
   final num questionIn;
+  final String userid;
 
   @override
   _QuestionPageState createState() => _QuestionPageState();
 }
 
 class _QuestionPageState extends State<QuestionPage> {
-  QuestionModel questions = QuestionModel();
-
   @override
   void initState() {
     super.initState();
-    FirebaseFirestore.instance
-        .collection("questions")
-        .doc(widget.questionIn.toString())
-        .get()
-        .then((value) {
-      questions = QuestionModel.fromMap(value.data());
-      setState(() {});
-    });
   }
 
   double _rating = 1.0;
-  num score = 0;
+
+  num score = 0; //  try to print value from that lsit
 
   void _onChanged(double value) {
     setState(() {
@@ -37,83 +34,79 @@ class _QuestionPageState extends State<QuestionPage> {
 
   @override
   Widget build(BuildContext context) {
+    int index =
+        0; //there is two option you can update data by use Set() .and you can get document by help of Get(),DocumentSnapshot<Map<String, dynamic>> this is document snapshot.it will return only single document file
     num questionindex = widget.questionIn;
+    final updater = userRef.doc(widget.userid);
+
+    Stream<DocumentSnapshot> stream2 = userRef.doc(widget.userid).snapshots();
     return Scaffold(
-        body: Padding(
-      padding: const EdgeInsets.fromLTRB(10, 26, 10, 10),
-      child: Column(
-        children: <Widget>[
-          Container(
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: Colors.amber[200],
-              borderRadius: BorderRadius.circular(20),
+        body: StreamBuilder(
+      stream: stream2,
+      builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        if (!snapshot.hasData) {
+          return const Center(
+            child: Text("Loading..."),
+          );
+        }
+        late num qi;
+        qi = snapshot.data!['userinfo']['questionIndex'];
+        return Column(
+          children: [
+            Text(qi.toString()),
+            StreamBuilder(
+              stream: questionRef.doc(qi.toString()).snapshots(),
+              builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                if (!snapshot.hasData) {
+                  return const CircularProgressIndicator.adaptive();
+                }
+                QuestionModel question =
+                    QuestionModel.fromMap(snapshot.data!.data());
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(snapshot.data!.data().toString()),
+                    ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.amber),
+                      ),
+                      child: Text(
+                        question.option1txt!,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18.0,
+                            fontFamily: "Farro"),
+                      ),
+                      onPressed: () {
+                        updater.update({
+                          'userinfo.questionIndex': qi+1,
+                        });
+                      },
+                    ),
+                  ],
+                );
+              },
             ),
-            height: 150,
-            width: 380,
-            child: Text(
-              "${questions.question}",
-              style: TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-                fontFamily: "Farro",
-              ),
-              softWrap: true,
-            ),
-          ),
-          Image.network(questions.imgurl.toString(),
-              width: 400.0, height: 250.0, errorBuilder: (BuildContext context,
-                  Object exception, StackTrace? stackTrace) {
-            return const CircularProgressIndicator();
-          }),
-          // Buttons From Here
-          Container(
-            child: Column(
-              children: [
-                questionBtn(
-                  val: questions.option1txt,
-                  fun: () => {
-                    score = questions.option1pt!,
-                  },
-                ),
-                questionBtn(
-                  val: questions.option2txt,
-                  fun: () => {
-                    score = questions.option2pt!,
-                  },
-                ),
-                questionBtn(
-                  val: questions.option3txt,
-                  fun: () => {
-                    score = questions.option3pt!,
-                  },
-                ),
-                questionBtn(
-                  val: questions.option4txt,
-                  fun: () => {
-                    score = questions.option4pt!,
-                  },
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+          ],
+        );
+      },
     ));
   }
 }
 
 // single btn layout
 class questionBtn extends StatelessWidget {
-  const questionBtn({Key? key, this.val, this.fun}) : super(key: key);
+  questionBtn({Key? key, this.val, this.fun}) : super(key: key);
   final String? val;
   final VoidCallback? fun;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      style: ButtonStyle(),
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color>(Colors.amber),
+      ),
       child: Text(
         "$val",
         style:
