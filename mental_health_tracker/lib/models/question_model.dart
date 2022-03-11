@@ -8,15 +8,13 @@ class QuestionModel {
   num? option2pt;
   num? option3pt;
   num? option4pt;
-  String? widget;
   num? uid;
-  String? imgurl;
   Map? option1;
   Map? option2;
   Map? option3;
   Map? option4;
 
-  QuestionModel({this.uid,this.question,this.widget,this.option1, this.option2, this.option3, this.option4, this.imgurl, this.option1txt, this.option2txt, this.option3txt, this.option4txt, this.option1pt, this.option2pt, this.option3pt, this.option4pt});
+  QuestionModel({this.uid,this.question,this.option1, this.option2, this.option3, this.option4, this.option1txt, this.option2txt, this.option3txt, this.option4txt, this.option1pt, this.option2pt, this.option3pt, this.option4pt});
 
   factory QuestionModel.fromMap(map){
     return QuestionModel(
@@ -34,8 +32,6 @@ class QuestionModel {
       option3pt: map['option3']['points'],
       option4txt: map['option4']['optext'],
       option4pt: map['option4']['points'],
-      widget: map['widget'],
-      imgurl: map['imgurl'],
     );
   }
 
