@@ -207,6 +207,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
                     builder: (BuildContext context) {
                       return QuestionPage(
                         questionIn: int.parse(loggedInUser.questionIndex.toString()),
+                        userid: loggedInUser.uid.toString(),
                       );
                     },
                   ));
