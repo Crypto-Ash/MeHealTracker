@@ -203,7 +203,8 @@ class _DashBoardPageState extends State<DashBoardPage> {
               child: Text("Questions"),
               onPressed: () {
                 setState(() {
-                  Navigator.push(context, MaterialPageRoute<void>(
+                  if (loggedInUser.questionans != "10") {
+                    Navigator.push(context, MaterialPageRoute<void>(
                     builder: (BuildContext context) {
                       return QuestionPage(
                         questionIn: int.parse(loggedInUser.questionIndex.toString()),
@@ -211,6 +212,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
                       );
                     },
                   ));
+                  }
                 });
               },
             )

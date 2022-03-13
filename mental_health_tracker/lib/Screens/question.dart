@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:mental_health_tracker/Screens/dashboard.dart';
 import 'package:mental_health_tracker/models/question_model.dart';
 import 'package:mental_health_tracker/models/user_model.dart';
 
@@ -25,6 +26,7 @@ class _QuestionPageState extends State<QuestionPage> {
   double _rating = 1.0;
 
   num score = 0; //  try to print value from that lsit
+  
 
   void _onChanged(double value) {
     setState(() {
@@ -32,10 +34,10 @@ class _QuestionPageState extends State<QuestionPage> {
     });
   }
 
+  int counter = 1;
+
   @override
   Widget build(BuildContext context) {
-    int index =
-        0; //there is two option you can update data by use Set() .and you can get document by help of Get(),DocumentSnapshot<Map<String, dynamic>> this is document snapshot.it will return only single document file
     num questionindex = widget.questionIn;
     final updater = userRef.doc(widget.userid);
 
@@ -51,9 +53,9 @@ class _QuestionPageState extends State<QuestionPage> {
         }
         late num qi;
         qi = snapshot.data!['userinfo']['questionIndex'];
+        print("======><< $counter");
         return Column(
           children: [
-            Text(qi.toString()),
             StreamBuilder(
               stream: questionRef.doc(qi.toString()).snapshots(),
               builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
@@ -62,30 +64,69 @@ class _QuestionPageState extends State<QuestionPage> {
                 }
                 QuestionModel question =
                     QuestionModel.fromMap(snapshot.data!.data());
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(snapshot.data!.data().toString()),
-                    ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(Colors.amber),
+                if (counter < 10) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(snapshot.data!.data().toString()),
+                      ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.amber),
+                        ),
+                        child: Text(
+                          question.option1txt!,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18.0,
+                              fontFamily: "Farro"),
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            if (counter == 10) {
+                              updater.update({
+                                'userinfo.questionIndex': qi + 1,
+                              });
+                            }
+                            updater.update({
+                              'userinfo.questionIndex': qi + 1,
+                              'userinfo.questionans': (counter + 1).toString(),
+                            });
+                            counter = counter + 1;
+                          });
+                        },
                       ),
-                      child: Text(
-                        question.option1txt!,
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18.0,
-                            fontFamily: "Farro"),
-                      ),
-                      onPressed: () {
-                        updater.update({
-                          'userinfo.questionIndex': qi+1,
+                    ],
+                  );
+                } else {
+                  return Center(
+                    child: InkWell(
+                      onTap: () {
+                        setState(() {
+                          Navigator.pushReplacement(context,
+                              MaterialPageRoute<void>(
+                            builder: (BuildContext context) {
+                              return DashBoardPage();
+                            },
+                          ));
                         });
                       },
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.blueAccent,
+                        ),
+                        child: const Text("Done",
+                            style: TextStyle(
+                              color: Colors.white,
+                            )),
+                        width: 200,
+                        height: 200,
+                        alignment: Alignment.center,
+                      ),
                     ),
-                  ],
-                );
+                  );
+                }
               },
             ),
           ],
