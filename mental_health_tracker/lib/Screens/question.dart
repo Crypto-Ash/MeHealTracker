@@ -24,7 +24,7 @@ class _QuestionPageState extends State<QuestionPage> {
 
   double _rating = 1.0;
 
-  num score = 0; //  try to print value from that lsit
+  num score = 0;
 
   void _onChanged(double value) {
     setState(() {
@@ -34,8 +34,7 @@ class _QuestionPageState extends State<QuestionPage> {
 
   @override
   Widget build(BuildContext context) {
-    int index =
-        0; //there is two option you can update data by use Set() .and you can get document by help of Get(),DocumentSnapshot<Map<String, dynamic>> this is document snapshot.it will return only single document file
+    int index = 0;
     num questionindex = widget.questionIn;
     final updater = userRef.doc(widget.userid);
 
@@ -73,7 +72,7 @@ class _QuestionPageState extends State<QuestionPage> {
                       ),
                       child: Text(
                         question.option1txt!,
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Colors.white,
                             fontSize: 18.0,
                             fontFamily: "Farro"),
@@ -110,7 +109,7 @@ class questionBtn extends StatelessWidget {
       child: Text(
         "$val",
         style:
-            TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: "Farro"),
+            const TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: "Farro"),
       ),
       onPressed: fun,
     );
