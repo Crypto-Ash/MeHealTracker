@@ -134,25 +134,3 @@ class _QuestionPageState extends State<QuestionPage> {
 
   Container QuestionBar(QuestionModel question) => Container(padding: EdgeInsets.all(15),alignment: Alignment.center,width: 340,height: 100,child: Text(question.question.toString(),style: const TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold,fontFamily: "Farro"),softWrap: true,), decoration: BoxDecoration(color: Colors.amber, borderRadius: BorderRadius.circular(25),),);
 }
-
-// single btn layout
-class questionBtn extends StatelessWidget {
-  questionBtn({Key? key, this.val, this.fun}) : super(key: key);
-  final String? val;
-  final VoidCallback? fun;
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(Colors.amber),
-      ),
-      child: Text(
-        "$val",
-        style:
-            TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: "Farro"),
-      ),
-      onPressed: fun,
-    );
-  }
-}
