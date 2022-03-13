@@ -1,10 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:mental_health_tracker/Services/user_preferences.dart';
 import 'package:mental_health_tracker/app/routes/app.routes.dart';
 
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await UserSimplePreferences.init();
   runApp(const MyApp());
 }
 

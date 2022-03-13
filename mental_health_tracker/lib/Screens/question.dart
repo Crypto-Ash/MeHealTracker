@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mental_health_tracker/Screens/dashboard.dart';
+import 'package:mental_health_tracker/Services/user_preferences.dart';
 import 'package:mental_health_tracker/models/question_model.dart';
 import 'package:mental_health_tracker/models/user_model.dart';
 
@@ -18,10 +19,6 @@ class QuestionPage extends StatefulWidget {
 }
 
 class _QuestionPageState extends State<QuestionPage> {
-  @override
-  void initState() {
-    super.initState();
-  }
 
   double _rating = 1.0;
 
@@ -35,6 +32,11 @@ class _QuestionPageState extends State<QuestionPage> {
 
   int counter = 1;
 
+  @override
+  void initState() {
+    super.initState();
+    counter = UserSimplePreferences.getCounter() ?? 1;
+  }
   @override
   Widget build(BuildContext context) {
     num questionindex = widget.questionIn;
@@ -124,6 +126,7 @@ class _QuestionPageState extends State<QuestionPage> {
                                   'userinfo.questionans': (counter).toString(),
                                 });
                                 counter = counter + 1;
+                                UserSimplePreferences.setCounter(counter);
                               });
                             },
                           );
