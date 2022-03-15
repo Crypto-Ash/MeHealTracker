@@ -53,28 +53,30 @@ class _DashBoardPageState extends State<DashBoardPage> {
         key: _scaffoldkey,
         backgroundColor: Color(dashbg),
         drawer: ClipRRect(
-          borderRadius: BorderRadius.only(
-              topRight: Radius.circular(20.0),
-              bottomRight: Radius.circular(20.0)),
+          borderRadius: const BorderRadius.only(
+              topRight: Radius.circular(300.0),
+              bottomRight: Radius.circular(300.0)),
           child: Drawer(
             child: ListView(
               padding: EdgeInsets.all(0),
               children: <Widget>[
                 UserAccountsDrawerHeader(
+                  decoration: BoxDecoration(color: Colors.teal),
                   accountEmail: Text(loggedInUser.email.toString()),
                   accountName: Text(loggedInUser.name.toString()),
                   currentAccountPicture: CircleAvatar(
-                    child: Text(loggedInUser.name
-                        .toString()
-                        .substring(0, 2)
-                        .toUpperCase()),
+                    backgroundColor: Colors.white,
+                    child: Image.asset(
+                      "assets/images/boy.png",
+                      scale: 2.0,
+                    ),
                   ),
                 ),
                 ListTile(
                   leading: Icon(Icons.home),
                   title: Text("Home"),
                   onTap: () {
-                    Navigator.pushNamed(context, '/dashboard');
+                    Navigator.pushReplacementNamed(context, '/dashboard');
                   },
                 ),
                 ListTile(
@@ -82,17 +84,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
                   title: Text("About Us"),
                   onTap: () {},
                 ),
-                ListTile(
-                  leading: Icon(Icons.rate_review),
-                  title: Text("Rate and Review"),
-                  onTap: () {},
-                ),
-                ListTile(
-                  leading: Icon(Icons.flag),
-                  title: Text("Privacy Policy"),
-                  onTap: () {},
-                ),
-                Divider(
+                const Divider(
                   thickness: 2.0,
                 ),
                 ListTile(
@@ -110,7 +102,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
         body: Column(
           children: [
             Container(
-              padding: EdgeInsets.all(15.0),
+              padding: const EdgeInsets.all(15.0),
               width: 400.0,
               height: 100.0,
               // color: Colors.amber,
@@ -125,19 +117,11 @@ class _DashBoardPageState extends State<DashBoardPage> {
                           return RichText(
                             text: TextSpan(
                               text: 'Hey ${snapshot.data}',
-                              style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 32.0,
-                                  fontFamily: 'Farro',
-                                  fontWeight: FontWeight.w600),
+                              style: dashboardHeaderTextStyle,
                               children: const <TextSpan>[
                                 TextSpan(
                                   text: '\nYour Report',
-                                  style: TextStyle(
-                                      color: Colors.black87,
-                                      fontSize: 32.0,
-                                      fontFamily: 'Farro',
-                                      fontWeight: FontWeight.w600),
+                                  style: dashboardUnderTextStyle,
                                 )
                               ],
                             ),
@@ -156,68 +140,9 @@ class _DashBoardPageState extends State<DashBoardPage> {
               ),
             ),
             //Detail-Card
+            UserDetailCard(context),
             Padding(
-              padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(45.0),
-                  color: const Color(0xffc0dfd3),
-                ),
-                height: MediaQuery.of(context).size.height - 450.0,
-                width: MediaQuery.of(context).size.width - 50.0,
-                child: Stack(
-                  children: <Widget>[
-                    const Positioned(
-                        top: 30.0,
-                        left: 25.0,
-                        child: Text(
-                          'Today',
-                          style: TextStyle(
-                            color: Colors.white60,
-                            fontSize: 20.0,
-                          ),
-                        )),
-                    Positioned(
-                      right: 30.0,
-                      top: 25.0,
-                      child: Container(
-                        height: 80,
-                        width: 80,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20.0),
-                          color: Colors.white,
-                        ),
-                        child: Image.asset('assets/images/boy.png'),
-                      ),
-                    ),
-                    Positioned(
-                        left: 25.0,
-                        top: 90.0,
-                        child: Text(
-                          loggedInUser.today ?? "Loading...",
-                          style: const TextStyle(
-                              fontSize: 29.0,
-                              fontFamily: 'Farro',
-                              color: Color(0xff6f7c6b),
-                              fontWeight: FontWeight.w700),
-                        )),
-                    Positioned(
-                        left: 25.0,
-                        bottom: 39.0,
-                        child: Text(
-                          "Question Answerd : ${loggedInUser.questionans}/10",
-                          style: const TextStyle(
-                              fontSize: 22.0,
-                              fontFamily: 'Farro',
-                              color: Color(0xff6f7c6b),
-                              fontWeight: FontWeight.w500),
-                        )),
-                  ],
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20.0,top: 10.0),
+              padding: const EdgeInsets.only(bottom: 20.0, top: 10.0),
               child: SizedBox(
                 width: 280,
                 height: 100,
@@ -300,19 +225,72 @@ class _DashBoardPageState extends State<DashBoardPage> {
             SizedBox(
               width: 250,
               height: 100,
-              child: ElevatedButton(child: const Text("Tasks", style: TextStyle(
-                fontFamily: "farro",
-                fontSize: 25.0,
-                color: Color(0xffd291ff),
-              ))
-              ,onPressed: (){},
-              style: ElevatedButton.styleFrom(
+              child: ElevatedButton(
+                  child: const Text("Tasks",
+                      style: TextStyle(
+                        fontFamily: "farro",
+                        fontSize: 25.0,
+                        color: Color(0xffd291ff),
+                      )),
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
                       elevation: 3,
                       primary: const Color(0xfff2e7f5),
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)))
-              ),
+                          borderRadius: BorderRadius.circular(20)))),
             )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Padding UserDetailCard(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(45.0),
+          color: const Color(0xffc0dfd3),
+        ),
+        height: MediaQuery.of(context).size.height - 450.0,
+        width: MediaQuery.of(context).size.width - 50.0,
+        child: Stack(
+          children: <Widget>[
+            const Positioned(
+                top: 30.0,
+                left: 25.0,
+                child: Text(
+                  'Today',
+                  style: cardlightTextStyle,
+                )),
+            Positioned(
+              right: 30.0,
+              top: 25.0,
+              child: Container(
+                height: 80,
+                width: 80,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20.0),
+                  color: Colors.white,
+                ),
+                child: Image.asset('assets/images/boy.png'),
+              ),
+            ),
+            Positioned(
+                left: 25.0,
+                top: 90.0,
+                child: Text(
+                  loggedInUser.today ?? "Loading...",
+                  style: cardMainTextStyle,
+                )),
+            Positioned(
+                left: 25.0,
+                bottom: 39.0,
+                child: Text(
+                  "Question Answerd : ${loggedInUser.questionans}/10",
+                  style: cardMainTextStyle,
+                )),
           ],
         ),
       ),
