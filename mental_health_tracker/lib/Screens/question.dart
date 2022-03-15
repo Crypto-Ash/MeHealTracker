@@ -35,12 +35,12 @@ class _QuestionPageState extends State<QuestionPage> {
   @override
   void initState() {
     super.initState();
-    counter = UserSimplePreferences.getCounter() ?? 1;
   }
   @override
   Widget build(BuildContext context) {
     num questionindex = widget.questionIn;
     final updater = userRef.doc(widget.userid);
+    counter = UserSimplePreferences.getCounter() == 11 ? 1:UserSimplePreferences.getCounter()!;
 
     Stream<DocumentSnapshot> stream2 = userRef.doc(widget.userid).snapshots();
     return StreamBuilder(
