@@ -2,11 +2,14 @@ import 'package:cache_manager/cache_manager.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mental_health_tracker/Constants/colors.dart';
 import 'package:mental_health_tracker/Screens/question.dart';
+import 'package:mental_health_tracker/Services/user_preferences.dart';
 import 'package:mental_health_tracker/models/user_model.dart';
 import 'package:mental_health_tracker/widgets/rect_button.dart';
 
+final userRef = FirebaseFirestore.instance.collection('users');
 class DashBoardPage extends StatefulWidget {
   const DashBoardPage({Key? key}) : super(key: key);
 
@@ -21,6 +24,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
   //fetching the current user from firestore
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
+  final DateTime _currentDate = DateTime.now();
 
   @override
   void initState() {
@@ -42,6 +46,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
   @override
   Widget build(BuildContext context) {
     // loggedInUser.userinfo?.forEach((key,value) => {print("${key} ${value}")});
+    final updater = userRef.doc(loggedInUser.uid);
     return SafeArea(
       child: Scaffold(
         key: _scaffoldkey,
@@ -137,7 +142,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
                             ),
                           );
                         }
-                        return CircularProgressIndicator();
+                        return const CircularProgressIndicator();
                       }),
                   RectButton(
                       onPressed: () {
@@ -145,7 +150,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
                           _scaffoldkey.currentState?.openDrawer();
                         });
                       },
-                      ic: Icon(Icons.menu)),
+                      ic: const Icon(Icons.menu)),
                 ],
               ),
             ),
@@ -161,7 +166,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
                 width: MediaQuery.of(context).size.width - 50.0,
                 child: Stack(
                   children: <Widget>[
-                    Positioned(
+                    const Positioned(
                         top: 30.0,
                         left: 25.0,
                         child: Text(
@@ -188,8 +193,8 @@ class _DashBoardPageState extends State<DashBoardPage> {
                         left: 25.0,
                         top: 90.0,
                         child: Text(
-                          '${loggedInUser.today}',
-                          style: TextStyle(
+                          loggedInUser.today ?? "Loading...",
+                          style: const TextStyle(
                               fontSize: 29.0,
                               fontFamily: 'Farro',
                               color: Colors.white,
@@ -200,25 +205,71 @@ class _DashBoardPageState extends State<DashBoardPage> {
               ),
             ),
             ElevatedButton(
-              child: Text("Questions"),
+              child: const Text("Questions"),
               onPressed: () {
-                setState(() {
-                  if (loggedInUser.questionans != "10") {
-                    Navigator.push(context, MaterialPageRoute<void>(
-                    builder: (BuildContext context) {
-                      return QuestionPage(
-                        questionIn: int.parse(loggedInUser.questionIndex.toString()),
-                        userid: loggedInUser.uid.toString(),
-                      );
-                    },
-                  ));
+                print("======>>> $_currentDate ");
+                if (UserSimplePreferences.getDate() == null) {
+                  setState(() {
+                    UserSimplePreferences.setDate(_currentDate);
+                  });
+                } else {
+                  if (calculateDifference(
+                          DateTime.parse(UserSimplePreferences.getDate()!)) == 0) {
+                            print("First If Loop");
+                    if (loggedInUser.questionans != "10") {
+                      print("2nd If Loop");
+                      setState(() {
+                        Navigator.push(context, MaterialPageRoute<void>(
+                          builder: (BuildContext context) {
+                            return QuestionPage(
+                              questionIn: int.parse(
+                                  loggedInUser.questionIndex.toString()),
+                              userid: loggedInUser.uid.toString(),
+                            );
+                          },
+                        ));
+                      });
+                    } // if-loop Ends
+                    else{
+                      print("I am Seting counter to 1");
+                      UserSimplePreferences.setCounter(1);
+                      Fluttertoast.showToast(msg: "You Have Completed Today's Questionner!!! \n\t Try Again Later...",textColor: Colors.white, fontSize: 18,toastLength: Toast.LENGTH_LONG, backgroundColor: const Color(0xffF59397));
+                    }
+                  }else{
+                    if(calculateDifference(
+                          DateTime.parse(UserSimplePreferences.getDate()!)) < 0){
+                            print("I am Next Day!!!!");
+                        UserSimplePreferences.setDate(_currentDate);
+                        UserSimplePreferences.setCounter(1);
+                        updater.update({
+                          "userinfo.questionans": 0.toString(),
+                        }); 
+                        setState(() {
+                        Navigator.push(context, MaterialPageRoute<void>(
+                          builder: (BuildContext context) {
+                            return QuestionPage(
+                              questionIn: int.parse(
+                                  loggedInUser.questionIndex.toString()),
+                              userid: loggedInUser.uid.toString(),
+                            );
+                          },
+                        ));
+                      });
+                    }
                   }
-                });
+                }
               },
             )
           ],
         ),
       ),
     );
+  }
+
+  int calculateDifference(DateTime date) {
+    DateTime now = DateTime.now();
+    return DateTime(date.year, date.month, date.day)
+        .difference(DateTime(now.year, now.month, now.day))
+        .inDays;
   }
 }
