@@ -40,7 +40,7 @@ class _QuestionPageState extends State<QuestionPage> {
   Widget build(BuildContext context) {
     num questionindex = widget.questionIn;
     final updater = userRef.doc(widget.userid);
-    counter = UserSimplePreferences.getCounter() == 11 ? 1:UserSimplePreferences.getCounter()!;
+    counter = UserSimplePreferences.getCounter()!;
 
     Stream<DocumentSnapshot> stream2 = userRef.doc(widget.userid).snapshots();
     return StreamBuilder(
@@ -52,7 +52,10 @@ class _QuestionPageState extends State<QuestionPage> {
           );
         }
         late num qi;
+        late num score;
         qi = snapshot.data!['userinfo']['questionIndex'];
+        score = snapshot.data!['userinfo']['Score'];
+        
         print("======><< $counter");
         return Scaffold(
           body: Container(
@@ -75,10 +78,10 @@ class _QuestionPageState extends State<QuestionPage> {
                             const Spacer(flex: 1,),
                             QuestionBar(question),
                             const Spacer(flex: 1,),
-                            questionButtonOne(question, updater, qi, context, question.option1txt),
-                            questionButtonOne(question, updater, qi, context, question.option2txt),
-                            questionButtonOne(question, updater, qi, context, question.option3txt),
-                            questionButtonOne(question, updater, qi, context, question.option4txt),
+                            questionButtonOne(question, updater, qi, context, question.option1txt, question.option1pt,score),
+                            questionButtonOne(question, updater, qi, context, question.option2txt,question.option2pt,score),
+                            questionButtonOne(question, updater, qi, context, question.option3txt,question.option3pt,score),
+                            questionButtonOne(question, updater, qi, context, question.option4txt,question.option4pt,score),
                             const Spacer(flex: 2,),
                           ],
                         );
@@ -95,7 +98,7 @@ class _QuestionPageState extends State<QuestionPage> {
     );
   }
 
-  ElevatedButton questionButtonOne(QuestionModel question, DocumentReference<Map<String, dynamic>> updater, num qi, BuildContext context,String? optionnum) {
+  ElevatedButton questionButtonOne(QuestionModel question, DocumentReference<Map<String, dynamic>> updater, num qi, BuildContext context,String? optionnum,num? points,num? score) {
     return ElevatedButton(
                             style: ButtonStyle(
                               backgroundColor:
@@ -123,6 +126,7 @@ class _QuestionPageState extends State<QuestionPage> {
                                 }
                                 updater.update({
                                   'userinfo.questionIndex': qi + 1,
+                                  'userinfo.Score': (score! + points!),
                                   'userinfo.questionans': (counter).toString(),
                                 });
                                 counter = counter + 1;
@@ -132,5 +136,5 @@ class _QuestionPageState extends State<QuestionPage> {
                           );
   }
 
-  Container QuestionBar(QuestionModel question) => Container(padding: EdgeInsets.all(15),alignment: Alignment.center,width: 340,height: 100,child: Text(question.question.toString(),style: const TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold,fontFamily: "Farro"),softWrap: true,), decoration: BoxDecoration(color: Colors.amber, borderRadius: BorderRadius.circular(25),),);
+  Container QuestionBar(QuestionModel question) => Container(padding: const EdgeInsets.all(15),alignment: Alignment.center,width: 340,height: 100,child: Text(question.question.toString(),style: const TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold,fontFamily: "Farro"),softWrap: true,), decoration: BoxDecoration(color: Colors.amber, borderRadius: BorderRadius.circular(25),),);
 }
