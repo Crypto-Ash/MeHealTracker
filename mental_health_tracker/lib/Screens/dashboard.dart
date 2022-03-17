@@ -36,7 +36,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
         .get()
         .then((value) {
       loggedInUser = UserModel.fromMap(value.data());
-      setState(() {});
+      setState(() {scoreGenrator();});
     });
   }
 
@@ -44,9 +44,27 @@ class _DashBoardPageState extends State<DashBoardPage> {
     return loggedInUser.name;
   }
 
+  void scoreGenrator() {
+    final updater =  userRef.doc(loggedInUser.uid);
+    if (loggedInUser.score! == 0) {
+      updater.update({'userinfo.today': 'N/A'});
+      print("N/A");
+    }
+    else if (loggedInUser.score! <= 15) {
+      updater.update({'userinfo.today': 'NotWell'});
+      print("NotWell");
+    }
+    else if (loggedInUser.score! <= 25 && loggedInUser.score! > 15) {
+      updater.update({'userinfo.today': 'Good'});
+      print("Good");
+    } else {
+      updater.update({'userinfo.today': 'Better'});
+      print("Better");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    // loggedInUser.userinfo?.forEach((key,value) => {print("${key} ${value}")});
     final updater = userRef.doc(loggedInUser.uid);
     return SafeArea(
       child: Scaffold(
@@ -199,6 +217,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
                             UserSimplePreferences.setCounter(1);
                             updater.update({
                               "userinfo.questionans": 0.toString(),
+                              "userinfo.Score": 0,
                             });
                             setState(() {
                               Navigator.push(context, MaterialPageRoute<void>(
