@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:cache_manager/cache_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:mental_health_tracker/Constants/colors.dart';
-import 'package:mental_health_tracker/Screens/dashboard.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -28,29 +28,34 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
-    Timer(const Duration(seconds: 5),initiateCache);
+    // Timer(const Duration(seconds: 5), initiateCache);
+    Timer(const Duration(seconds: 2), (){ setState(() {
+      _isChange = true;
+    });});
     super.initState();
   }
 
+  bool _isChange = false;
+
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Color(dashbg),
-      body: Center(
-        child: SizedBox(
-          width: 190,
-          height: 159,
-          child: Text(
-            "MeHealTracker",
-            style: TextStyle(
-              fontSize: 38.0,
-              color: Color(splashtxt),
-              fontWeight: FontWeight.w500,
-              fontFamily: 'Cutive',
-            ),
-          ),
-        ),
-      ),
-    );
+    return Scaffold(
+        backgroundColor: const Color(dashbg),
+        body: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              color: Colors.amber,
+              alignment: Alignment.center,
+              height: MediaQuery.of(context).size.height / 3.5,
+              width: MediaQuery.of(context).size.width,
+              child: Lottie.network(
+              "https://assets7.lottiefiles.com/packages/lf20_xduq8cpf.json",
+              fit: BoxFit.fitHeight,
+              alignment: Alignment.center),),
+            AnimatedDefaultTextStyle(child: Text("Meheal\nTracker"),duration: Duration(milliseconds: 800),style:_isChange ? splashAfterTextStyle:splashMainTextStyle, curve: Curves.easeInCirc,),
+          ],
+        ));
   }
 }

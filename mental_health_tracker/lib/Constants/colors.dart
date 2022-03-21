@@ -36,3 +36,16 @@ const TextStyle cardMainTextStyle = TextStyle(
     fontFamily: 'Farro',
     color: Color(0xff6f7c6b),
     fontWeight: FontWeight.w700);
+
+const TextStyle splashMainTextStyle = TextStyle(
+              fontSize: 20.0,
+              color: Color(splashtxt),
+              fontWeight: FontWeight.w500,
+              fontFamily: 'Cutive',
+            );
+const TextStyle splashAfterTextStyle = TextStyle(
+              fontSize: 35.0,
+              color: Color(splashtxt),
+              fontWeight: FontWeight.bold,
+              fontFamily: 'Cutive',
+            );
