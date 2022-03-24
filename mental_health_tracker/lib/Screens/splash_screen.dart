@@ -28,7 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
-    // Timer(const Duration(seconds: 5), initiateCache);
+    Timer(const Duration(seconds: 5), initiateCache);
     Timer(const Duration(seconds: 2), (){ setState(() {
       _isChange = true;
     });});
@@ -46,7 +46,6 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              color: Colors.amber,
               alignment: Alignment.center,
               height: MediaQuery.of(context).size.height / 3.5,
               width: MediaQuery.of(context).size.width,
