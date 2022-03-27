@@ -49,3 +49,25 @@ const TextStyle splashAfterTextStyle = TextStyle(
               fontWeight: FontWeight.bold,
               fontFamily: 'Cutive',
             );
+const TextStyle aboutheadStyle = TextStyle(
+                      color: Colors.black,
+                        fontFamily: 'Farro',
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold);
+const TextStyle aboutheadStyleafter = TextStyle(
+                      color: Colors.black,
+                        fontFamily: 'Farro',
+                        fontSize: 39,
+                        fontWeight: FontWeight.bold);
+const TextStyle aboutinnerStyle = TextStyle(
+                    color: Colors.red,
+                    wordSpacing: 1,
+                      fontFamily: 'Farro',
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold);
+const TextStyle aboutinnerStyleafter = TextStyle(
+                    color: Colors.red,
+                    wordSpacing: 1,
+                      fontFamily: 'Farro',
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold);

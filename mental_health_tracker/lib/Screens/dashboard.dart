@@ -100,7 +100,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
                 ListTile(
                   leading: Icon(Icons.info),
                   title: Text("About Us"),
-                  onTap: () {},
+                  onTap: () {Navigator.pushNamed(context, '/aboutpage');},
                 ),
                 const Divider(
                   thickness: 2.0,
@@ -251,7 +251,9 @@ class _DashBoardPageState extends State<DashBoardPage> {
                         fontSize: 25.0,
                         color: Color(0xffd291ff),
                       )),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, "/taskpage");
+                  },
                   style: ElevatedButton.styleFrom(
                       elevation: 3,
                       primary: const Color(0xfff2e7f5),
